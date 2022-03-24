@@ -2,15 +2,25 @@ import time
 import sys
 import codecs
 import numpy as np
+import gc   # garbage collector
+from collections import defaultdict
+import matplotlib.pyplot as plt
 
 def load_textfile(filename: str):
     try:
         with codecs.open(filename, 'r', encoding="utf-8") as f:
             content = f.read()
-            return content
     except:
         print("Couldn't read the file!")
         sys.exit(1)
+    
+    illegal_chars = "()'-:,.?!;—"
+    
+    content = content.lower()
+    for char in illegal_chars:
+        content = content.replace(char, "")
+
+    return content
 
 
 def bubble_sort(data):
@@ -69,26 +79,88 @@ def merge_sort(data):
     return tmp_data
 
 
-def quick_sort(data):
-    pass
+def partition(start, end, tmp_data):
+    pivot_idx = start
+    pivot = tmp_data[pivot_idx]
+
+    while(start < end):
+        while((start < len(tmp_data)) and (tmp_data[start] <= pivot)):
+            start += 1
+        
+        while(tmp_data[end] > pivot):
+            end -= 1
+        
+        if(start < end):
+            tmp_data[start], tmp_data[end] =  tmp_data[end], tmp_data[start]
+
+    tmp_data[end], tmp_data[pivot_idx] = tmp_data[pivot_idx], tmp_data[end]
+    return end
+
+
+def quick_sort(start, end, data):
+    tmp_data = data
+    if(start < end):
+        partitioning_idx = partition(start, end, tmp_data)
+        quick_sort(start, partitioning_idx - 1, tmp_data)
+        quick_sort(partitioning_idx + 1, end, tmp_data)
+
+    return tmp_data
 
 
 def main():
-    N = 10
-    illegal_chars = "()'-:,.?!;—"
+    # garbage collector 
+    # gc_old = gc.isenabled()
+    # gc.disable() 
+
+    sys.setrecursionlimit(100000)
     
-    content = load_textfile("pan-tadeusz.txt").lower()
-    for char in illegal_chars:
-        content = content.replace(char, "")
-    content = np.array(content.split()[:N])
+    N_range = np.array([100, 1000, 10000, 50000, 100000, 300000, 500000])    # how many elements in the table
+    NUMBER_OF_REALIZATIONS = 1
+    # possible_sorts = [bubble_sort, insertion_sort, merge_sort, quick_sort]
+    possible_sorts = [merge_sort, quick_sort]
 
 
-    test_table = [10,4,5,1,3]
-    sorted_content = merge_sort(test_table)
-    print(sorted_content)
-    # print(test_table)
+    content = load_textfile("pan-tadeusz.txt").split()
+    results = defaultdict(dict)
+    results 
 
-    
+    for sort in possible_sorts:
+        for n in N_range:
+            time_sum = 0
+            for _ in range(0, NUMBER_OF_REALIZATIONS):
+                content_n_elem = np.array(content[:n])
+
+                start_time = time.time()
+                if(sort == quick_sort):
+                    sorted_content = quick_sort(0, len(content_n_elem)-1, content_n_elem)
+                else:
+                    sorted_content = sort(content_n_elem)
+                end_time = time.time()
+
+                time_sum += (end_time - start_time)
+            mean_time = time_sum / NUMBER_OF_REALIZATIONS
+            results[sort.__name__][n] = mean_time
+            
+            print("{:.2f}: Dont ctrl+c me! At: {}".format(time.time(), n))
+        
+    # print(results.get(bubble_sort.__name__).keys(), results.get(bubble_sort.__name__).values())
+    fig, ax = plt.subplots()
+    for sort in possible_sorts:
+        ax.plot(results.get(sort.__name__).keys(), results.get(sort.__name__).values(), label=sort.__name__)
+
+    ax.set_xlabel("N")
+    ax.set_ylabel("Time [s]")
+    ax.legend()
+    fig.tight_layout()
+    plt.show()
+
+
+    # test_table = [10,4,5,1,3]
+    # sorted_content = quick_sort(0, len(test_table)-1, test_table)
+    # print(sorted_content)
+
+    # if(gc_old):
+        # gc.enable()
 
 
 if __name__ == "__main__":
