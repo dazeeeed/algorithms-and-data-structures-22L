@@ -20,6 +20,7 @@ $ python morse.py filename.txt
 
 ## Lab 02 
 Implemenation of bubble sort, insertion sort, merge sort and quick sort. Measurement of time complexity for each sort. Example results:
+
 ![quick_sort_vs_merge_sort](https://github.com/dazeeeed/algorithms-and-data-structures-22L/blob/main/lab02/quick_sort_vs_merge_sort.png)
 
 ## Lab 03
