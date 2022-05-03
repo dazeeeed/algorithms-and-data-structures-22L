@@ -29,15 +29,15 @@ class Heap:
         # max_value = max(considered_nodes_values)
         # max_id = self.data.index(max_value)
         max_value = np.max(considered_nodes_values)
-        max_id = np.where(self.data == max_value)[0][0]
+        max_id = np.where(self.data == max_value)[0][-1]
 
         if current_max_node != max_id:
             self.data[current_max_node], self.data[max_id] = self.data[max_id], self.data[current_max_node]
             self.heapify(max_id)
 
     def build_heap(self):
-        idx = len(self.data) // 2 - 1
-        for i in range(idx, -1, -1):
+        idx = len(self.data) // self.ary - 1
+        for i in range(idx, 0, -1):
             self.heapify(i)
 
     def print_heap(self, idx, level=0):
@@ -54,6 +54,17 @@ class Heap:
             if len(self.data) > 0:
                 self.heapify(0)
 
-    def insert_element(self, new_element):
-        self.data = self.data + [new_element]
-        self.build_heap()
+    def get_parent(self, idx):
+        """Returns index of the parent node"""
+        if idx == 0:
+            return None
+        return (idx - 1) // self.ary 
+
+    def insert_element(self, element):
+        self.data = self.data + [element]
+        current_index = len(self.data) - 1
+        parent = self.get_parent(current_index)
+        while(parent != None and (self.data[parent] < self.data[current_index])):
+            self.heapify(parent)
+            current_index = parent
+            parent = self.get_parent(current_index)
