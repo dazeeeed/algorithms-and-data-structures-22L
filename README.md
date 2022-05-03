@@ -31,4 +31,4 @@ Implementation of Binary Search Tree and AVL Tree. Comparision of creation, sear
 ## Lab 04
 Implemenation of Heap. Comparision of creation and deletion times for different d-ary heaps. 
 
-![Heap](https://github.com/dazeeeed/algorithms-and-data-structures-22L/blob/main/lab04/figures/heap_2.jpg)
+![Heap](https://github.com/dazeeeed/algorithms-and-data-structures-22L/blob/main/lab04/figures/heap_2.JPG)
