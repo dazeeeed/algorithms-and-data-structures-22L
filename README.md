@@ -25,4 +25,10 @@ Implemenation of bubble sort, insertion sort, merge sort and quick sort. Measure
 
 ## Lab 03
 Implementation of Binary Search Tree and AVL Tree. Comparision of creation, searching and deletion times for both trees.
+
 ![BST_vs_AVL](https://github.com/dazeeeed/algorithms-and-data-structures-22L/blob/main/lab03/Figure_2.png)
+
+## Lab 04
+Implemenation of Heap. Comparision of creation and deletion times for different d-ary heaps. 
+
+![Heap](https://github.com/dazeeeed/algorithms-and-data-structures-22L/blob/main/lab04/figures/heap_2.jpg)
