@@ -3,8 +3,11 @@ import search
 
 
 def main():
-    result_N = search.find_N('', 'ab')   
-    print(result_N)
+    # result = search.find_N('', 'ab')
+    # result = search.find_KR('abcdabcdababc', 'abc')
+    result = search.find_KMP('abcdabcdababc', 'abc')
+
+    print(result)
 
 
 if __name__=='__main__':
