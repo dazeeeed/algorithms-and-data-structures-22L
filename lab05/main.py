@@ -6,6 +6,7 @@ from collections import defaultdict
 import codecs
 from utilities import load_textfile, FirstWords
 import matplotlib.pyplot as plt
+import os
 
 LEN_RANDOM_TEXT = 1000
 
@@ -54,7 +55,8 @@ def main():
     # search_algorithms = [search.find_N]
 
     # n_words_list = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-    n_words_list = [10, 20, 30, 50]
+    n_words_list = [10, 20, 30, 50, 100, 200, 300, 500, 750, 1000]
+    # n_words_list = [10, 20]
 
     results = defaultdict(dict)
     fig, ax = plt.subplots()
@@ -73,11 +75,12 @@ def main():
         ax.plot(results.get(search_algorithm.__name__).keys(), results.get(search_algorithm.__name__).values(),
                 label=search_algorithm.__name__)
 
-    print(results)
+    # print(results)
     ax.set_xlabel("N")
     ax.set_ylabel("Time [s]")
     ax.legend()
     fig.tight_layout()
+    plt.savefig(os.path.join("graphics", "plot.pdf"))
     plt.show()
 
 
